@@ -3,7 +3,7 @@
 /** Prototype object for entries, has common methods and params */
 function Entry() {
 
-    /** Generate automaticly and set entry ID, convert number to base 16 symbols, it will look like like "88a766e" */
+    /** Generate automaticly and set entry ID, convert number to base 16 symbols, it will look like "88a766e" */
     this.ID = Math.random().toString(16).substring(2)
 
     /** Generate automaticly and set entry date */
@@ -24,9 +24,8 @@ function Entry() {
      */
     this.getDate = function () {
         let date = new Date(this.date)
-        return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay()
-            + " " + date.getHours() + ":" + date.getMinutes() + ":" +
-            date.getSeconds()
+        return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + " " 
+                + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
     }
 
     /**
@@ -37,19 +36,17 @@ function Entry() {
      */
     this.setProperties = function (args) {
         if (!args || !Object.entries(args)) {
-            error(`setProperties(): calls with empty argument or not in 
-            {key:value} format`)
+            error(`setProperties() calls with empty argument or not in {key:value} format`)
             return
         }
 
         for (let [key, value] of Object.entries(args)) {
             if (typeof (this[key]) === "undefined") {
-                error(`setProperties(): argseter ${key} does not exist`)
+                error(`setProperties() ${key} does not exist`)
                 break
             }
             if (typeof (value) !== typeof (this[key])) {
-                error(`setProperties(): argseter ${key} has type 
-                "${typeof (this[key])}", u try input "${typeof (value)}"`)
+                error(`setProperties() ${key} has type "${typeof (this[key])}", u try input "${typeof (value)}"`)
                 break
             }
 
@@ -227,7 +224,7 @@ function Review(args) {
     this.getAverageRatingValue = function () {
         let counter = 0,
             result = 0
-        for (let value of Object.keys(this.rating)) {
+        for (let [, value] of Object.entries(this.rating)) {
             result += value
             counter++
         }
@@ -276,3 +273,69 @@ function sortProducts(products, sortRule) {
             products.sort(compNumber)
     }
 }
+
+/** Examples */
+
+let soccerBall = new Product({
+    name: "Soccer Ball",
+    description: "Rounded rubber bladder for enhanced stability and good air retention",
+    price: 45.9,
+    brand: "Puma",
+    quantity: 10
+})
+
+soccerBall.addReview({
+    author: "Tom",
+    comment: "great balance of padding, reliability in flight and all-round fun factor when it came to striking the ball",
+    rating: {
+        service: 5,
+        price: 4.5,
+        value: 2,
+        quality: 5
+    }
+})
+
+soccerBall.addReview({
+    author: "Mike",
+    comment: "This is one of the best if not the best model from Puma balls",
+    rating: {
+        service: 2,
+        price: 2,
+        value: 5,
+        quality: 3
+    }
+})
+
+console.log("Soccer ball average rating is " + soccerBall.getAverageRating()) // -> 3.5625
+
+let products = [
+    soccerBall,
+    new Product({
+        ID:"12",
+        name:"S",
+        description:"WOW!",
+        price: 77
+    }),
+    new Product({
+        ID:"78",
+        name:"B",
+        description:"Nothing is as easy as it looks",
+        price: 99
+    }),
+    new Product({
+        ID:"2",
+        name:"C",
+        description:"Everything takes longer than you think it will",
+        price: 11
+    }),
+    new Product({
+        ID:"10",
+        name:"A",
+        description:"444 223 5667 899",
+        price: 4
+    }),
+]
+
+console.log(searchProducts(products,"44"))
+sortProducts(products,"price")
+console.log(products)
