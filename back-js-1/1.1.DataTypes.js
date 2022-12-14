@@ -256,21 +256,14 @@ function searchProducts(products, search) {
  * @param {*} sortRule sorting criterion (ID, price or name)
  */
 function sortProducts(products, sortRule) {
-    function compString(first, second) {
-        if (first.getProperty(sortRule).toLowerCase() > second.getProperty(sortRule).toLowerCase()) return 1
-        if (first.getProperty(sortRule).toLowerCase() < second.getProperty(sortRule).toLowerCase()) return -1
-        return 0
-    }
-    function compNumber(first, second) {
-        return first.getProperty(sortRule) - second.getProperty(sortRule)
-    }
     switch (sortRule) {
         case "name":
-            products.sort(compString)
         case "ID":
-            products.sort(compString)
+            products.sort((a,b) => a[sortRule] > b[sortRule] ? 1 : a[sortRule] < b[sortRule] ? -1 : 0)
+            break
         case "price":
-            products.sort(compNumber)
+            products.sort((a,b) => a[sortRule] - b[sortRule])
+            break
     }
 }
 
@@ -311,31 +304,31 @@ console.log("Soccer ball average rating is " + soccerBall.getAverageRating()) //
 let products = [
     soccerBall,
     new Product({
-        ID:"12",
+        ID:"abbbss",
         name:"S",
         description:"WOW!",
         price: 77
     }),
     new Product({
-        ID:"78",
+        ID:"aaabb",
         name:"B",
         description:"Nothing is as easy as it looks",
         price: 99
     }),
     new Product({
-        ID:"2",
+        ID:"sfgghg",
         name:"C",
         description:"Everything takes longer than you think it will",
         price: 11
     }),
     new Product({
-        ID:"10",
+        ID:"gdfgr",
         name:"A",
         description:"444 223 5667 899",
         price: 4
     }),
 ]
 
-console.log(searchProducts(products,"44"))
+console.log(searchProducts(products,"ID"))
 sortProducts(products,"price")
 console.log(products)
