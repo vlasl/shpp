@@ -3,10 +3,6 @@
  */
 const AbstractProduct = {
 
-    constructor: {
-        name: "AbsctractProduct"
-    },
-
     id: 0,
     setId: function (id) { compareTypes("number", id) ? this.id = id : null },
     getId: function () { return this.id },
@@ -129,11 +125,7 @@ const AbstractProduct = {
     },
 }
 
-const Clothes = function (args) {
-
-    /* Add AbstractProduct object params and methods to Clothes prototype */
-    this.__proto__ = AbstractProduct
-    this.constructor.name = "Clothes"
+function Clothes(args) {
 
     this.material = ""
     this.getMaterial = () => this.material
@@ -147,12 +139,10 @@ const Clothes = function (args) {
     this.params(args)
 
 }
+Clothes.prototype = Object.create(AbstractProduct)
+Clothes.prototype.constructor = Clothes
 
-const Electronics = function (args) {
-
-    /* Add AbstractProduct object params and methods to Electronics prototype */
-    this.__proto__ = AbstractProduct
-    this.constructor.name = "Electronics"
+function Electronics(args) {
 
     this.warranty = 0
     this.getWarranty = () => this.warranty
@@ -166,6 +156,8 @@ const Electronics = function (args) {
     this.params(args)
 
 }
+Electronics.prototype = Object.create(AbstractProduct)
+Electronics.prototype.constructor = Electronics
 
 const Review = function (args) {
 
@@ -177,7 +169,6 @@ const Review = function (args) {
         getDate: AbstractProduct.getDate,
         setDate: AbstractProduct.setDate
     }
-    this.constructor.name = "Review"
 
     /** Generate automaticly and set entry ID, convert number to string, it will look like "3268239" */
     this.id = Math.random().toString(8).substring(15)
