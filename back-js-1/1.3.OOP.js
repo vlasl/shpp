@@ -3,6 +3,10 @@
  */
 const AbstractProduct = {
 
+    constructor: {
+        name: "AbsctractProduct"
+    },
+
     id: 0,
     setId: function (id) { compareTypes("number", id) ? this.id = id : null },
     getId: function () { return this.id },
@@ -112,14 +116,12 @@ const AbstractProduct = {
 
     /** Print on the screen all the defined parameters of object, without functions */
     getFullInformation: function () {
-        /* hack instead of this.constructor.name */
-        let className = this.material !== undefined ? "Clothes" : "Electronics"
-        console.log(`\n[#${className}]`)
+        console.log(`\n[#${this.constructor.name}]`)
         for (let [key, value] of Object.entries(this)) {
             if (typeof (value) !== "function") console.log(key + ": " + value)
         }
         if (this.reviews.length) {
-            console.log(`\n[#${className}: Reviews]`)
+            console.log(`\n[#${this.constructor.name}: Reviews]`)
             for (let review of this.reviews) {
                 console.log(review)
             }
@@ -131,6 +133,7 @@ const Clothes = function (args) {
 
     /* Add AbstractProduct object params and methods to Clothes prototype */
     this.__proto__ = AbstractProduct
+    this.constructor.name = "Clothes"
 
     this.material = ""
     this.getMaterial = () => this.material
@@ -149,6 +152,7 @@ const Electronics = function (args) {
 
     /* Add AbstractProduct object params and methods to Electronics prototype */
     this.__proto__ = AbstractProduct
+    this.constructor.name = "Electronics"
 
     this.warranty = 0
     this.getWarranty = () => this.warranty
@@ -173,6 +177,7 @@ const Review = function (args) {
         getDate: AbstractProduct.getDate,
         setDate: AbstractProduct.setDate
     }
+    this.constructor.name = "Review"
 
     /** Generate automaticly and set entry ID, convert number to string, it will look like "3268239" */
     this.id = Math.random().toString(8).substring(15)
@@ -209,6 +214,7 @@ const Review = function (args) {
         }
         return result / counter
     }
+
 }
 
 /**
