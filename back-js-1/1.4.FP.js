@@ -38,7 +38,7 @@ function FPCSV(path) {
             rule, 
             function (match) {
                 /* search real parameter name (case insensitive hack) */
-                let city = Object.keys(data).filter(key => key.toLowerCase() == match.toLowerCase())
+                let city = Object.keys(data).filter(key => key.toLowerCase() == match.toLowerCase())[0]
                 return `${city} [${data[city].rating} place ​in Ukraine ​TOP-10 with population ${data[city].population}]`
         }
         )
