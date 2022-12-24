@@ -8,7 +8,7 @@ function parseTcpStringAsHttpRequest(string) {
                     let buffer = current.split(" ")
                     result.method = buffer[0]
                     result.uri = buffer[1]
-                } else if (current.match(/Accept|User-Agent|Content-Length/i)) {
+                } else if (current.match(/Accept|User-Agent|Content/i)) {
                     let buffer = current.split(":")
                     result.headers[buffer[0]] = buffer[1]
                 } else if (!current.length && array[indx + 1] && array[indx + 1].length) {

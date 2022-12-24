@@ -35,14 +35,23 @@ function outputHttpResponse(statusCode, statusMessage, headers, body) {
 
 function processHttpRequest($method, $uri, $headers, $body) {
     let statusCode, statusMessage
-
-    if ($method == "GET" && $uri.match(/\/sum\?nums\=[\d,]*\d/i)) {
-        statusMessage = $uri.split("=")[1].split(",").reduce((a, b) => a * 1 + b * 1)
-        statusCode = "200 OK"
-    } else if ($method == "GET" && !$uri.match(/\/sum/i)) {
+    if ($method == "POST" && $uri.match(/\/api\/checkLoginAndPassword/i) && $headers['Content-Type'] == " application/x-www-form-urlencoded") {
+        let curretLoginPassword = $body.split("&").map(c=>c.split("=")[1]).join(":")
+        try {
+            let listLoginPassword = require("fs").readFileSync("back-js-1/assets/passwords.txt").toString().split("\r\n")
+            statusMessage = 
+                listLoginPassword.includes(curretLoginPassword)
+                ? `<h1 style="color:green">FOUND</h1>`
+                : `<h1 style="color:red">USER NOT FOUND</h1>`
+            statusCode = "200 OK"
+        } catch (e) {
+            statusMessage = "Internal Server Error"
+            statusCode = "500 Internal Server Error"
+        }
+    } else if ($method == "POST" && !$uri.match(/\/api/i)) {
         statusMessage = "not found"
         statusCode = "404 Not Found"
-    } else if ($method != "GET" || !$uri.match(/\?nums\=/i)) {
+    } else if ($method != "POST" || !$uri.match(/checkLoginAndPassword/i) || $headers['Content-Type'] != " application/x-www-form-urlencoded") {
         statusMessage = "bad request"
         statusCode = "400 Bad Request"
     }
